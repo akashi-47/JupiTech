@@ -1,0 +1,58 @@
+### Test de connexion basique
+GET http://localhost:8083/api/commandes/test
+
+### Récupérer toutes les commandes
+GET http://localhost:8083/api/commandes/all
+###
+GET http://localhost:8083/api/produits
+
+### Créer une nouvelle commande
+POST http://localhost:8083/api/commandes/creer
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "articles": [
+        {
+            "articleId": 1,
+            "quantite": 2
+        },
+        {
+            "articleId": 2,
+            "quantite": 1
+        }
+    ],
+    "adresseLivraison": {
+        "rue": "123 rue de l'Art",
+        "ville": "Paris",
+        "codePostal": "75001",
+        "pays": "France"
+    },
+    "modePaiement": "CARTE_BANCAIRE"
+}
+
+### Récupérer une commande par ID
+GET http://localhost:8083/api/commandes/1
+
+### Récupérer l'historique des commandes d'un utilisateur
+GET http://localhost:8083/api/commandes/historique/1
+
+### Récupérer l'historique des commandes par état
+GET http://localhost:8083/api/commandes/historique/1/etat/EN_COURS
+
+### Suivre une commande
+GET http://localhost:8083/api/commandes/1/suivi/1
+
+### Mettre à jour l'état d'une commande
+PUT http://localhost:8083/api/commandes/1/etat
+Content-Type: application/json
+
+{
+    "etat": "EN_LIVRAISON"
+}
+
+### Annuler une commande
+PUT http://localhost:8083/api/commandes/1/annuler
+
+### Récupérer l'historique des commandes par période
+GET http://localhost:8083/api/commandes/historique/1/periode?debut=2024-01-01&fin=2024-12-31 
