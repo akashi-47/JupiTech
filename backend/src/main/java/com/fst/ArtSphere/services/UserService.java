@@ -10,18 +10,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fst.ArtSphere.dto.UserDTO;
 import com.fst.ArtSphere.repositories.UserRepository;
-import com.fst.ArtSphere.repositories.RoleRepository;
+
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import com.fst.ArtSphere.dto.AuthResponseDTO;
+import com.fst.ArtSphere.dto.LoginDTO;
 
 import lombok.NoArgsConstructor;
 import com.fst.ArtSphere.entities.User;
-import com.fst.ArtSphere.entities.Role;
-import com.fst.ArtSphere.repositories.RoleRepository;
+import com.fst.ArtSphere.enums.RolesEnum;
+import com.fst.ArtSphere.exceptions.InvalidCredentialsException;
+import com.fst.ArtSphere.exceptions.InvalidRoleException;
+import com.fst.ArtSphere.exceptions.UserAlreadyExistsException;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -36,8 +41,7 @@ public class UserService {
     private  UserRepository userRepository;
     @Autowired
     private  BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-   private RoleRepository roleRepository;
+  
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -48,8 +52,7 @@ public class UserService {
     
     public User registerUser(@RequestBody UserDTO userDTO) {
         if(userRepository.existsByEmail(userDTO.getEmail())){
-           return null;
-           
+          throw new UserAlreadyExistsException("Email already exists");
         }
 
         User user = new User();
@@ -58,24 +61,40 @@ public class UserService {
         user.setNom(userDTO.getNom());
         user.setPrenom(userDTO.getPrenom());
         user.setAddress(userDTO.getAddress());
-        user.setBiographie(userDTO.getBiographie());
-        Role role = roleRepository.findByName(userDTO.getRole())
-            .orElseThrow(() -> new RuntimeException("Role not found"));
-        user.setRoles(Arrays.asList(role));
+        user.setBusinessname(userDTO.getBusinessName());
+        try {
+            // Use valueOf() to map the role string to the enum
+            user.setRole(RolesEnum.valueOf(userDTO.getRole().toUpperCase())); // assuming role is case-insensitive
+        } catch (IllegalArgumentException e) {
+            // Handle the case where the role is invalid
+            throw new InvalidRoleException("Invalid role: " + userDTO.getRole());
+        }
+        
         userRepository.save(user);
         return user;
        
     }
-    public AuthResponseDTO loginUser(@RequestBody UserDTO userDTO) {
+    public AuthResponseDTO loginUser(@RequestBody LoginDTO userDTO) {
+        try {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
+            new UsernamePasswordAuthenticationToken(
                 userDTO.getEmail(),
-                userDTO.getPassword()));
+                userDTO.getPassword()
+            )
+        );
+
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
+        System.out.println("Token: " + token);
+        
         return new AuthResponseDTO(token);
+    } catch (BadCredentialsException e) {
+        throw new InvalidCredentialsException("Invalid email or password.");
+    }
 
     }
+
     public User getUserById(int id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -95,7 +114,7 @@ public class UserService {
         user.setPrenom(userDetails.getPrenom());
         user.setEmail(userDetails.getEmail());
         user.setAddress(userDetails.getAddress());
-        user.setBiographie(userDetails.getBiographie());
+        user.setBusinessname(userDetails.getBusinessname());
 
         return userRepository.save(user);
     }

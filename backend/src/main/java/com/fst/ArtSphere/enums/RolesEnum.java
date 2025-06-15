@@ -3,7 +3,7 @@ package com.fst.ArtSphere.enums;
 import org.springframework.security.core.GrantedAuthority;
 public enum RolesEnum implements GrantedAuthority {
         ADMIN("ADMIN"),
-        ARTIST("ARTIST"),
+        ARTIST("SELLER"),
         CLIENT("CLIENT");
 
         private final String authority;

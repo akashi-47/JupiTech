@@ -25,11 +25,11 @@ public class AdminService {
 
     // Gestion du stock
     public Produit mettreAJourStock(int produitId, int nouvelleQuantite) {
-        Produit produit = produitService.getProduitById(produitId)
-            .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
+        Produit produit = produitService.getProduitById(produitId);
+           
         
         if (nouvelleQuantite < 0) {
-            throw new IllegalArgumentException("La quantité ne peut pas être négative");
+            throw new IllegalArgumentException("The quantity could not be negative");
         }
         
         produit.setStock(nouvelleQuantite);

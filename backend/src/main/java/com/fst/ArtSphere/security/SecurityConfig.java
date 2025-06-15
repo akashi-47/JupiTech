@@ -74,7 +74,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/artsphere/auth/register", "/artsphere/auth/login", "/artsphere/auth/**").permitAll();
+                auth.requestMatchers("/auth/register", "/auth/login", "/auth/**","/api/produits/*").permitAll();
               
                 auth.anyRequest().authenticated();
             })

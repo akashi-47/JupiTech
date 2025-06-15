@@ -4,13 +4,13 @@ import com.fst.ArtSphere.entities.Produit;
 import com.fst.ArtSphere.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 
@@ -22,14 +22,15 @@ public class ProduitController {
     private ProduitService produitService;
 
     // Créer un produit
+@PreAuthorize("hasAuthority('CLIENT')")
    @PostMapping("/add")
-   
     public ResponseEntity<Produit> creerProduit(@RequestBody Produit produit) {
+
         return ResponseEntity.ok(produitService.saveProduit(produit));
     }
 
     // Obtenir tous les produits
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllProduits() {
         try {
             List<Produit> produits = produitService.getAllProduits();
@@ -53,9 +54,8 @@ public class ProduitController {
     // Obtenir un produit par ID
     @GetMapping("/{id}")
     public ResponseEntity<Produit> getProduitById(@PathVariable Integer id) {
-        return produitService.getProduitById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok( produitService.getProduitById(id)); 
+               
     }
 
     // Mettre à jour un produit

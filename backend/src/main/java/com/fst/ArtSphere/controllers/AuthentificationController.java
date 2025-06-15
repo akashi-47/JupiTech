@@ -19,14 +19,15 @@ import org.springframework.http.HttpStatus;
 
 
 import com.fst.ArtSphere.dto.UserDTO;
-
+import com.fst.ArtSphere.exceptions.InvalidCredentialsException;
 import com.fst.ArtSphere.services.UserService;
 import com.fst.ArtSphere.dto.AuthResponseDTO;
+import com.fst.ArtSphere.dto.LoginDTO;
     
 
 @RestController
 
-@RequestMapping("/artsphere/auth")
+@RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:3000") 
 public class AuthentificationController {
 
@@ -39,24 +40,17 @@ public class AuthentificationController {
 
    
     @PostMapping("/login")
-    public ResponseEntity<?> loginClient(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> loginClient(@RequestBody LoginDTO userDTO) {
     
         AuthResponseDTO authResponseDTO = userService.loginUser(userDTO);
-        
-
-            if (authResponseDTO != null) {
-            return ResponseEntity.ok(authResponseDTO);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
+        return ResponseEntity.ok(authResponseDTO);
+ 
     }
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO) {
-      
-        this.userService.registerUser(userDTO);  
-      
-        return ResponseEntity.ok("User registered successfully");
-       
+   
+            userService.registerUser(userDTO);
+            return ResponseEntity.ok("User registered successfully"); 
     }
       @GetMapping("/welcome")
     public ResponseEntity<Map<String, String>> welcome() {

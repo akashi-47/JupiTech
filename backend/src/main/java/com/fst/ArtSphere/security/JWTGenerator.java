@@ -34,7 +34,7 @@ public class JWTGenerator {
         Date expireDate = new Date(currentDate.getTime() + 70000000);
         
         // Get all authorities/roles
-        Set<String> roles = userDetails.getAuthorities().stream()
+        Set<String> role = userDetails.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toSet());
 
@@ -43,7 +43,7 @@ public class JWTGenerator {
             .setIssuedAt(currentDate)
             .setExpiration(expireDate)
             // Add roles claim explicitly
-            .claim("roles", roles)
+            .claim("role", role)
             .signWith(key, SignatureAlgorithm.HS512)
             .compact();
     }

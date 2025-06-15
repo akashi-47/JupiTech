@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fst.ArtSphere.enums.RolesEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,14 +46,12 @@ public class User  {
   private String password;
   private String email;
  private String address;
-  private String token;  
-  private String biographie;
-  @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-  @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-  @Builder.Default
-private List<Role> roles = new ArrayList<>();
 
-  @OneToMany(mappedBy = "artiste", cascade = CascadeType.ALL )
+  private String businessname;
+  @Enumerated(EnumType.STRING)
+  private RolesEnum role;
+
+  @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL )
   @JsonIgnore
   private List<Produit> produits;
 
@@ -61,12 +60,5 @@ private List<Role> roles = new ArrayList<>();
 
 	@OneToMany(mappedBy = "client")
     private List<Notification> notifications;
-
-	        
-    
-
-
- 
-  
 
 }

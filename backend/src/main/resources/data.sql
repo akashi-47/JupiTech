@@ -1,10 +1,10 @@
-INSERT INTO artiste (nom, prenom, email, password, adresse, biographie) 
+INSERT INTO seller (nom, prenom, email, password, adresse, businessName) 
 VALUES 
-('Dupont', 'Jean', 'jean.dupont@email.com', 'password123', '123 rue de l''Art, Paris', 'Artiste contemporain'),
+('Dupont', 'Jean', 'jean.dupont@email.com', 'password123', '123 rue de l''Art, Paris', 'seller contemporain'),
 ('Martin', 'Sophie', 'sophie.martin@email.com', 'password456', '456 avenue des Arts, Lyon', 'Sculptrice moderne'),
 ('Bernard', 'Pierre', 'pierre.bernard@email.com', 'password789', '789 boulevard des Peintres, Marseille', 'Photographe');
 
-INSERT INTO produit (nom, description, prix, artiste_id) 
+INSERT INTO produit (nom, description, prix, seller_id) 
 VALUES 
 ('Tableau abstrait', 'Peinture acrylique sur toile', 500.00, 1),
 ('Sculpture moderne', 'Bronze patiné', 1200.00, 2),

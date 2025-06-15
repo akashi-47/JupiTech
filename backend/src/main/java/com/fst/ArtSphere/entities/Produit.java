@@ -2,6 +2,8 @@ package com.fst.ArtSphere.entities;
 
 import java.util.List;
 
+import com.fst.ArtSphere.enums.CategorieEnum;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,27 +27,22 @@ public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String titre;
+    private String title;
     private String description;
     private double prix;
-    private String typeOeuvre;
+    private String status;
     private int stock;
     private String imageURL;
-    private String dimension;
-  
-    private String format;
-    
-
-    @ManyToOne
-    @JoinColumn(name = "categorie_id")
-    private Categorie categorie;
+    private String quantite;
+ 
+    private CategorieEnum categorie;
 
     @ManyToMany(mappedBy = "produits")
     private List<Commande> commandes;
 
     @ManyToOne
-    @JoinColumn(name = "artiste_id")
-    private User artiste;
+    @JoinColumn(name = "seller_id")
+    private User seller;
 
   
 
