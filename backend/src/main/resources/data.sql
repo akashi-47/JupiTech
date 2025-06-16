@@ -8,10 +8,10 @@ INSERT INTO produit (nom, description, prix, seller_id)
 VALUES 
 ('Tableau abstrait', 'Peinture acrylique sur toile', 500.00, 1),
 ('Sculpture moderne', 'Bronze patiné', 1200.00, 2),
-('Photo noir et blanc', 'Tirage argentique', 300.00, 3); package com.fst.ArtSphere.controllers;
+('Photo noir et blanc', 'Tirage argentique', 300.00, 3); package com.fst.Jupitech.controllers;
 
-import com.fst.ArtSphere.entities.Categorie;
-import com.fst.ArtSphere.services.CategorieService;
+import com.fst.Jupitech.entities.Categorie;
+import com.fst.Jupitech.services.CategorieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

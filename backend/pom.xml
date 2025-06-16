@@ -13,7 +13,7 @@
     <groupId>com</groupId>
     <artifactId>fst</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ArtSphere</name>
+    <name>Jupitech</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
