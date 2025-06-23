@@ -6,6 +6,8 @@ import com.fst.Jupitech.enums.CategorieEnum;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,8 +36,8 @@ public class Produit {
     private int stock;
     private String imageURL;
     private String quantite;
- 
-    private CategorieEnum categorie;
+   @Enumerated(EnumType.STRING)
+    private CategorieEnum categorie;   
 
     @ManyToMany(mappedBy = "produits")
     private List<Commande> commandes;

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 import Card from "@/components/helpersComponents/Card";
 import { useAppContext } from "@/context/appContext";
@@ -9,22 +10,24 @@ export default function Products() {
   const { products, loading } = useAppContext();
   const [category, setCategory] = useState<string>("SMARTPHONE");
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
 
   // Update filtered products whenever category or products change
   useEffect(() => {
    if(products.length>0)
     {
-    const filtered = products.filter((product) => product.categorie === category);
-    setFilteredProducts(filtered);
-    console.log(" products:", products.at(0)?.categorie); // For debugging - check filtered products
-    
-    // For debugging - check what categories exist in your data
-   
-      const availableCategories = [...new Set(products.map(product => product.categorie))];
-      console.log("Available categories in data:", availableCategories);
-    
-  }
-  }, [category, products]);
+    let filtered = products.filter((product) => product.categorie === category);
+      if (search.trim()) {
+        filtered = filtered.filter(
+          (product) =>
+            product.title.toLowerCase().includes(search.toLowerCase()) ||
+            product.description.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+      setFilteredProducts(filtered);
+    }
+  }, [category, products, search]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6">

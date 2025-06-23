@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 
@@ -40,13 +39,13 @@ export default function Welcoming() {
       </Link>
     
   </div>
-  <div data-aos="fade-up" data-aos-delay={600}>
-    <a
-      className="w-full rounded border border-gray-600 bg-gray-800 px-6 py-3 text-center font-semibold text-gray-300 transition-all hover:bg-gray-700 sm:ml-4 sm:w-auto"
-      href="#0"
+  <div data-aos="fade-up " data-aos-delay={600}>
+    <Link
+      className="w-full bg-orange-600 rounded border border-gray-600 px-6 py-3 text-center font-semibold text-gray-300 transition-all hover:bg-orange-700 sm:ml-4 sm:w-auto"
+      href="/signup?role=SELLER"
     >
      Become a Seller
-    </a>
+    </Link>
   </div>
 </div>
 

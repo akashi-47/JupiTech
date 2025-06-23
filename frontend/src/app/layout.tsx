@@ -3,16 +3,15 @@ import "./css/style.css";
 
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 import Header from "@/components/ui/header";
 import Footer from "@/components/ui/footer";
-import { usePathname } from "next/navigation";
 import { ProductProvider } from "../context/productContext";
 import SearchBar from "@/components/helpersComponents/SearchBar";
 import { AppProvider } from "@/context/appContext";
 import { UserProvider } from "@/context/userContext";
-
-
 
 const inter = Inter({
   subsets: ["latin"],
@@ -47,33 +46,48 @@ const nacelle = localFont({
   display: "swap",
 });
 
-
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [search, setSearch] = useState("");
+  const router = useRouter();
 
+  const handleSearch = () => {
+    if (search.trim()) {
+      router.push(`/products?search=${encodeURIComponent(search)}`);
+   
+    }
+  };
 
-  const pathname  = usePathname();
-  const showSearchBar = pathname === '/products' || pathname.startsWith('/products/') || pathname === '/cart';
+  const pathname = usePathname();
+  const showSearchBar =
+    pathname === "/products" ||
+    pathname.startsWith("/products/") ||
+    pathname === "/cart";
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${nacelle.variable} bg-gray-950 font-inter text-base text-gray-200 antialiased`}
       >
         <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
-
           <ProductProvider>
             <AppProvider>
               <UserProvider>
-          <Header />
-          {showSearchBar && <SearchBar label="Search for products"  />}
-          {children}
-          <Footer></Footer>
-          </UserProvider>
-          </AppProvider>
+                <Header />
+                {showSearchBar && (
+                  <SearchBar
+                    label="Search for products"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onSearch={handleSearch}
+                  />
+                )}
+                {children}
+                <Footer></Footer>
+              </UserProvider>
+            </AppProvider>
           </ProductProvider>
         </div>
       </body>

@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
@@ -21,6 +22,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    // Liste des chemins à ignorer (Swagger et autres publics)
+    private static final List<String> PUBLIC_URLS = List.of(
+        "/swagger-ui/",
+        "/swagger-ui.html",
+        "/v3/api-docs",
+        "/v3/api-docs/",
+        "/v3/api-docs/",
+        "/swagger-resources/",
+        "/webjars/"
+    );
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        // Ignore si le chemin commence par un des préfixes publics
+        return PUBLIC_URLS.stream().anyMatch(path::startsWith);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,7 +51,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                     userDetails.getAuthorities());
-                    System.out.println(userDetails.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }

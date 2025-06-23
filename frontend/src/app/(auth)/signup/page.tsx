@@ -3,7 +3,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
 import { useAppContext } from "@/context/appContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import "../../css/auth.css";
 
 interface FormData {
@@ -11,17 +11,20 @@ interface FormData {
   email: string;
   password: string;
   address: string;
-  businessname?: string;  // For seller, this will be optional
+  businessname?: string;  // For sELLER, this will be optional
   role: "CLIENT" | "SELLER";
 }
 
 export default function SignUp() {
+  const searchParams = useSearchParams();
+  const defaultRole = searchParams.get("role") === "SELLER" ? "SELLER" : "CLIENT";
+
   const [formData, setFormData] = useState<FormData>({
     nom: "",
     email: "",
     password: "",
     address: "",
-    role: "CLIENT",  // default user type
+    role: defaultRole,
   });
   const router = useRouter(); // For navigation after successful registration
   const [message, setMessage] = useState<string | null>(null); // To display error/success messages
@@ -105,13 +108,16 @@ export default function SignUp() {
                 }`}
                 onClick={() => handleRoleChange('SELLER')}
               >
-                Seller
+                
+                
+
+                SELLER
               </button>
             </div>
             <div className="mt-2 text-center text-xs text-white">
               {formData.role === 'SELLER'
                 ? "Register as a client to discover and purchase products"
-                : "Register as a seller to list and sell your products"}
+                : "Register as a sELLER to list and sell your products"}
             </div>
           </div>
 
@@ -178,7 +184,7 @@ export default function SignUp() {
               {/* Conditional fields based on user type */}
               {formData.role === 'SELLER' && (
                 <div className="space-y-5 rounded-lg border border-indigo-200 p-4">
-                  <div className="text-sm font-medium text-indigo-500">Seller Information</div>
+                  <div className="text-sm font-medium text-indigo-500">SELLER Information</div>
                   <div>
                     <label className="mb-1 block text-sm font-medium text-indigo-300" htmlFor="businessName">
                       Business Name
@@ -186,7 +192,7 @@ export default function SignUp() {
                     <input
                       id="businessName"
                       type="text"
-                      name="businessName"
+                      name="businessname"
                       value={formData.businessname || ""}
                       onChange={handleInputChange}
                       className="w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -200,10 +206,17 @@ export default function SignUp() {
             <div className="mt-6 space-y-5">
               <button
                 type="submit"
-                className="w-full rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
-                disabled={loading} // Disable the button while loading
+                className={`w-full rounded px-4 py-2 text-white hover:bg-indigo-700
+    ${formData.role === 'SELLER' ? 'bg-orange-500 hover:bg-orange-600' : 'bg-indigo-600'}
+  `}
+                disabled={loading}
               >
-                {loading ? "Signing up..." : formData.role === 'CLIENT' ? 'Sign Up as Client' : 'Sign Up as Seller'}
+                {loading
+                  ? "Signing up..."
+                  : formData.role === 'CLIENT'
+                    ? 'Sign Up as Client'
+                    : <span className="text-white">Sign Up as SELLER</span>
+                }
               </button>
 
               <div className="flex items-center gap-3 text-sm italic text-gray-500">

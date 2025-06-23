@@ -74,8 +74,18 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/auth/register", "/auth/login", "/auth/**","/api/produits/*").permitAll();
-              
+                auth.requestMatchers(
+                    "/auth/register",
+                    "/auth/login",
+                    "/auth/**",
+                    "/api/produits/*",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs",
+                    "/swagger-resources/**",
+                    "/webjars/**"
+                ).permitAll();
                 auth.anyRequest().authenticated();
             })
             .httpBasic(Customizer.withDefaults())

@@ -3,7 +3,7 @@ package com.fst.Jupitech.dto;
 import lombok.Data;
 
 @Data
-public class ArtistDTO {
+public class SellerDTO {
     private String nom;
     private String prenom;
     private String email;

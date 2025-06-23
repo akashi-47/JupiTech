@@ -12,6 +12,7 @@ import { useUserContext } from "@/context/userContext";
 export default function GetCart() {
 
     const {productList, total, updateQuantity,removeProduct} = useProductContext();
+    console.log(productList);
     const router = useRouter();
     const {isLoggedIn} = useUserContext(); // Accessing user context
     const toCheckout = () => {
@@ -65,7 +66,10 @@ export default function GetCart() {
                 className="flex items-center justify-between p-6 border-[1px] border-[#9932CC] bg-transparent rounded-lg"
               >
                 <div className="flex items-center">
-                  <Image src={product.imageURL} alt={product.title} className="w-24 h-24 object-cover rounded-md" />
+                  <Image src={"/images/"+product.imageURL} alt={product.title}
+                  width={120}
+                  height={120}
+                   className="w-24 h-24 object-cover rounded-md" />
                   <div className="ml-4">
                     <h3 className="text-xl font-semibold ">{product.title}</h3>
                     <p className="">{product.description}</p>

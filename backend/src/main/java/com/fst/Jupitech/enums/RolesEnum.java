@@ -3,7 +3,7 @@ package com.fst.Jupitech.enums;
 import org.springframework.security.core.GrantedAuthority;
 public enum RolesEnum implements GrantedAuthority {
         ADMIN("ADMIN"),
-        ARTIST("SELLER"),
+        SELLER("SELLER"),
         CLIENT("CLIENT");
 
         private final String authority;
