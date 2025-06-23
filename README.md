@@ -23,9 +23,7 @@
 - [Prerequisites](#-prerequisites)
 - [Installation](#-installation)
 - [Configuration](#-configuration)
-- [API Documentation](#-api-documentation)
 - [Security](#-security)
-- [Screenshots](#-screenshots)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -64,8 +62,6 @@
 - **RESTful API**: Well-structured API endpoints
 - **Real-time Updates**: Live notifications for order status
 - **File Upload**: Image management for products
-- **Email Integration**: Automated email notifications
-- **Data Validation**: Comprehensive input validation
 - **Error Handling**: Graceful error management
 - **Logging**: Detailed application logging
 
