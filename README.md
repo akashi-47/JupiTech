@@ -212,9 +212,9 @@ We welcome contributions to improve Jupitech! Here's how you can help:
 ## 👨‍💻 Author
 
 **Ismail Saili**
-- GitHub: [@ismail-saili](https://github.com/akashi-47)
+- GitHub: [@akashi-47](https://github.com/akashi-47)
 - Email: ismail.saili07@gmail.com
-- LinkedIn: [Ismail Saili Driouch](https://www.linkedin.com/in/ismail-saili-800bba249/)
+- LinkedIn: [Ismail Saili](https://www.linkedin.com/in/ismail-saili-800bba249/)
 
 ## 🙏 Acknowledgments
 
