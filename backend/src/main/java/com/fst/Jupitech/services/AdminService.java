@@ -14,27 +14,20 @@ import com.fst.Jupitech.entities.Produit;
 @Service
 public class AdminService {
     @Autowired
-    private UserService userService;
-    @Autowired
-    private ProduitService produitService;
-    @Autowired
-    private CommandeService commandeService;
-    // ... autres services
+    private ProductService produitService;
+ 
 
-    // Implémentation des méthodes d'administration
+    // // Gestion du stock
+    // public Produit mettreAJourStock(int produitId, int nouvelleQuantite) {
+    //     Produit produit = produitService.getProduitById(produitId);
 
-    // Gestion du stock
-    public Produit mettreAJourStock(int produitId, int nouvelleQuantite) {
-        Produit produit = produitService.getProduitById(produitId);
-           
-        
-        if (nouvelleQuantite < 0) {
-            throw new IllegalArgumentException("The quantity could not be negative");
-        }
-        
-        produit.setStock(nouvelleQuantite);
-        return produitService.saveProduit(produit);
-    }
+    //     if (nouvelleQuantite < 0) {
+    //         throw new IllegalArgumentException("The quantity could not be negative");
+    //     }
+
+    //     produit.setStock(nouvelleQuantite);
+    //     return produitService.updateProduct(produit); // Use updateProduit, not saveProduit
+    // }
 
     public List<Produit> getProduitsStockBas(int seuilMin) {
         return produitService.getAllProduits().stream()

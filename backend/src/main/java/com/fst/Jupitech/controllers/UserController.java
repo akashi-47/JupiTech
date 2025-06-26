@@ -1,7 +1,11 @@
 package com.fst.Jupitech.controllers;
 
+import com.fst.Jupitech.dto.UserDTO;
 import com.fst.Jupitech.entities.User;
 import com.fst.Jupitech.services.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +26,11 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<?> updateProfile(
             @PathVariable int userId,
-            @RequestBody User userDetails) {
-        try {
+            @Valid @RequestBody UserDTO userDetails) {
+        
             User updatedUser = userService.updateUser(userId, userDetails);
             return ResponseEntity.ok(updatedUser);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+     
     }
 
     @PutMapping("/{userId}/password")

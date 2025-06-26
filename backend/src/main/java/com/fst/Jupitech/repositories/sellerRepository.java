@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface sellerRepository extends JpaRepository<User, Integer> {
+public interface SellerRepository extends JpaRepository<User, Integer> {
     @Query("SELECT p FROM Produit p WHERE p.seller.id = :sellerId")
     List<Produit> findProduitsBysellerId(int sellerId);
     

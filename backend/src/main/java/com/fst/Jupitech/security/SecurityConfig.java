@@ -74,6 +74,11 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> {
+                // TEMP: Permit all requests for testing
+                auth.anyRequest().permitAll();
+
+                // Commented: Only permit some endpoints, require auth for others
+                /*
                 auth.requestMatchers(
                     "/auth/register",
                     "/auth/login",
@@ -87,6 +92,7 @@ public class SecurityConfig {
                     "/webjars/**"
                 ).permitAll();
                 auth.anyRequest().authenticated();
+                */
             })
             .httpBasic(Customizer.withDefaults())
             .build();

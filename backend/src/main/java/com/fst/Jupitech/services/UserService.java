@@ -3,9 +3,12 @@ package com.fst.Jupitech.services;
 
 import java.util.Arrays;
 import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fst.Jupitech.dto.UserDTO;
@@ -31,11 +34,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fst.Jupitech.security.JWTGenerator;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.security.core.Authentication;
 
 
 
 @Data   @Service @NoArgsConstructor
+@Validated  
 public class UserService {
     @Autowired
     private  UserRepository userRepository;
@@ -47,6 +54,8 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JWTGenerator jwtGenerator;
+    @Autowired
+    private ModelMapper modelMapper;
     
    
     
@@ -64,7 +73,7 @@ public class UserService {
         user.setBusinessname(userDTO.getBusinessName());
         try {
             // Use valueOf() to map the role string to the enum
-            user.setRole(RolesEnum.valueOf(userDTO.getRole().toUpperCase())); // assuming role is case-insensitive
+            user.setRole(userDTO.getRole()); // assuming role is case-insensitive
         } catch (IllegalArgumentException e) {
             // Handle the case where the role is invalid
             throw new InvalidRoleException("Invalid role: " + userDTO.getRole());
@@ -99,26 +108,19 @@ public class UserService {
         return userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("User not found"));
     }
-     // Mise à jour du profil a adapter pour chaque type d'utilisateur
-     public User updateUser(int userId, User userDetails) {
+     public User updateUser(int userId, UserDTO userDetails) {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        
-        // Vérifier si le nouvel email n'est pas déjà utilisé par un autre utilisateur
+            .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                 
+        // Check if the new email is not already used by another user
         if (!user.getEmail().equals(userDetails.getEmail()) && 
-            userRepository.findByEmail(userDetails.getEmail()).isPresent()) {
-            throw new RuntimeException("Email déjà utilisé");
+             userRepository.findByEmail(userDetails.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already in use");
         }
         
-        user.setNom(userDetails.getNom());
-        user.setPrenom(userDetails.getPrenom());
-        user.setEmail(userDetails.getEmail());
-        user.setAddress(userDetails.getAddress());
-        user.setBusinessname(userDetails.getBusinessname());
-
+        modelMapper.map(userDetails, user);
         return userRepository.save(user);
     }
-    
     // Changer le mot de passe
     public User updatePassword(int userId, String oldPassword, String newPassword) {
         User user = userRepository.findById(userId)

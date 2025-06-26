@@ -1,58 +1,32 @@
 package com.fst.Jupitech.services;
 
 
+import com.fst.Jupitech.dto.ProductDTO;
 import com.fst.Jupitech.entities.Produit;
-import com.fst.Jupitech.repositories.sellerRepository;
+import com.fst.Jupitech.repositories.SellerRepository;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fst.Jupitech.entities.User;
-
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class sellerService {
+public class SellerService {
 
     @Autowired
-    private sellerRepository sellerRepository;
+    private SellerRepository sellerRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    
-
-
-    
-    public List<User> getAllsellers() {
-        return sellerRepository.findAll();
-    }
-
-    
-    public Optional<User> getsellerById(int  id) {
-        return sellerRepository.findById(id);
-    }
-
-    
-    public User updateseller(int id, User sellerDetails) {
-        Optional<User> seller = sellerRepository.findById(id);
-        if (seller.isPresent()) {
-            User existingseller = seller.get();
-            existingseller.setNom(sellerDetails.getNom());
-            existingseller.setPrenom(sellerDetails.getPrenom());
-            existingseller.setAddress(sellerDetails.getAddress());
-            existingseller.setEmail(sellerDetails.getEmail());
-            existingseller.setPassword(sellerDetails.getPassword());
-            existingseller.setBusinessname(sellerDetails.getBusinessname());
-            return sellerRepository.save(existingseller);
-        }
-        return null;
-    }
-
-    
-    public void deleteseller(int id) {
-        sellerRepository.deleteById(id);
-    }
-
-    public List<Produit> getProduitsBysellerId(int sellerId) {
-        return sellerRepository.findProduitsBysellerId(sellerId);
+    public List<ProductDTO> getProduitsBysellerId(int sellerId) {
+        List<Produit> produits = sellerRepository.findProduitsBysellerId(sellerId);
+        return produits.stream()
+                .map(produit -> modelMapper.map(produit, ProductDTO.class))
+                .toList();
+  
+   
     }
 
     public Optional<User> login(String email, String password) {

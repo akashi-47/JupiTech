@@ -16,18 +16,18 @@ public class AdminController {
     private AdminService adminService;
 
     // Mettre à jour le stock d'un produit
-    @PutMapping("/produits/{id}/stock")
-    public ResponseEntity<?> updateStock(
-            @PathVariable("id") int produitId,
-            @RequestParam("quantite") int nouvelleQuantite) {
-        try {
-            Produit produit = adminService.mettreAJourStock(produitId, nouvelleQuantite);
-            return ResponseEntity.ok(produit);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                .body(Map.of("error", e.getMessage()));
-        }
-    }
+    // @PutMapping("/produits/{id}/stock")
+    // public ResponseEntity<?> updateStock(
+    //         @PathVariable("id") int produitId,
+    //         @RequestParam("quantite") int nouvelleQuantite) {
+    //     try {
+    //         Produit produit = adminService.mettreAJourStock(produitId, nouvelleQuantite);
+    //         return ResponseEntity.ok(produit);
+    //     } catch (Exception e) {
+    //         return ResponseEntity.badRequest()
+    //             .body(Map.of("error", e.getMessage()));
+    //     }
+    // }
 
     // Obtenir la liste des produits avec un stock bas
     @GetMapping("/produits/stock-bas")
